@@ -8,12 +8,11 @@
         <div class="two wide column"></div>
         <div class="twelve wide column centered">
 
-        <h2 id="titulologin">
+        <h1>
             Bibliotefast
-        </h2>
-
-                <center><h2>Login</h2></center>
-                <br/><br/>
+        </h1>
+                <br/>
+                <h2>Login</h2>
                 <form method="POST" action="{% url 'estante:login' %}" class='ui fluid form'>
                     {% csrf_token %}
 
@@ -38,13 +37,13 @@
                         {% if form.errors %}
                             {{ form.non_field_errors }}
                         {% endif %}
-                    </div></div>
+                    </div>
 
 
             <div class="two wide column"></div>
          <div class="twelve wide column centered">
                     <div align="center">
-                        <button type="submit" class="ui button" id="salvarsemmargem">{% blocktrans %} Entrar {% endblocktrans %}</button>
+                        <button type="submit" class="ui blue button">{% blocktrans %} Entrar {% endblocktrans %}</button>
                         <br/><br/>
                         <a href="{% url 'estante:cadastro-pessoa' %}">{% blocktrans %} Ainda não tem conta? Crie uma agora
                             mesmo! {% endblocktrans %}</a>

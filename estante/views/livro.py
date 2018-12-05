@@ -7,6 +7,7 @@ from estante.models.emprestimo import Emprestimo
 from estante.forms.livro import LivroForm, LivroEditaForm
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext_lazy as _
 
 
 class DicLivro(View):
@@ -73,7 +74,7 @@ class CadastraLivro(View, Pessoa):
                 livro.status = True
                 livro.save()
 
-            msg = 'Livro cadastrado com sucesso!'
+            msg = _('Livro cadastrado com sucesso!')
             form_limpo = LivroForm()
 
         return render(request, self.template, {'msg': msg, 'form': form_limpo})

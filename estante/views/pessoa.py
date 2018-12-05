@@ -11,24 +11,22 @@ from django.utils.translation import ugettext_lazy as _
 
 class CadastraPessoa(View):
     template = 'cad_pessoa.html'
-    template2 = 'perfil.html'
-    template3 = 'index.html'
 
-    def get(self, request):
+    def get(self, request, id=None):
         id = request.user.id
         if id:
             pessoa = Pessoa.objects.get(pk=id)
             form = PessoaEditForm(instance=pessoa)
         else:
             form = PessoaForm()
-        return render(request, self.template, {'form': form})
 
-    def post(self, request):
+        return render(request, self.template, {'form': form, 'id': id})
+
+    def post(self, request, id=None):
         id = request.user.id
         if id:
             pessoa = Pessoa.objects.get(pk=id)
             form = PessoaEditForm(instance=pessoa, data=request.POST)
-            print (form)
             if form.is_valid():
                 form = form.save(commit=False)
                 form.set_password(request.POST['password'])
@@ -46,10 +44,9 @@ class CadastraPessoa(View):
                 request.session.set_expiry(6000)
                 request.session.get_expire_at_browser_close()
 
-                return render(request, self.template2, {'msg': _('Informações alteradas com sucesso!')})
+                return redirect('/perfil/', {'msg': _('Informações alteradas com sucesso!')})
             else:
-                print(form.errors)
-            return render(request, self.template, {'form': form})
+                return render(request, self.template, {'form': form, 'id': id})
         else:
             form = PessoaForm(data=request.POST)
             if form.is_valid():
@@ -58,8 +55,9 @@ class CadastraPessoa(View):
                 pessoa.is_active = True
                 pessoa.save()
 
-                return render(request, self.template3, {'form': LoginForm})
-        return render(request, self.template, {'form': form})
+                msg = _('Usuário cadastrado com sucesso!')
+
+                return redirect('/', {'msg': msg})
 
 
 class Login(View):
@@ -80,8 +78,8 @@ class Login(View):
             form = LoginForm(data=request.POST)
         if form.is_valid() == False:
             return render(request, self.template, {'form': form})
-        username = form.save(commit = False).username
-        password = form.save(commit = False).password
+        username = form.save(commit=False).username
+        password = form.save(commit=False).password
 
         user = authenticate(username=username, password=password)
         if user:
@@ -91,7 +89,7 @@ class Login(View):
             desativo = Pessoa.objects.get(pk=id)
             if desativo.is_active is False:
                 logout(request)
-                return render(request, self.template3, {'msg': 'Este usuario está inativo, deseja ativar?', 'form': LoginForm})
+                return render(request, self.template3, {'msg': _('Este usuário está inativo, deseja ativar?'), 'form': LoginForm})
             if pessoa.is_valid():
                 pessoa = pessoa.save(commit=False)
                 request.session['first_name'] = pessoa.first_name

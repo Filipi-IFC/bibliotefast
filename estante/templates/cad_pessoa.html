@@ -2,76 +2,86 @@
 {% load i18n %}
 {% block content %}
 
+    {% if user.is_authenticated %}
     <h1>
         {% trans "Editar Usuário" %}
     </h1>
+    {% else %}
+    <h1>
+        {% trans "Cadastrar Usuário" %}
+    </h1>
+    {% endif %}
 
     <section class="ui container">
         <article class="ui grid">
             <div class="two wide column"></div>
             <div class="twelve wide column" id="margem">
-                <form method="POST" action="{% url 'estante:cadastro-pessoa' %}" class='ui fluid form'>
+                {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'estante:edita-pessoa' id %}" class='ui fluid form'>
+                    {% else %}
+                    <form method="POST" action="{% url 'estante:cadastro-pessoa' %}" class='ui fluid form'>
+                        {% endif %}
 
-                    {% csrf_token %}
+                        {% csrf_token %}
 
-                    {% if msg %}
+                        {% if msg %}
                         <div>{{ msg }}</div>
-                    {% endif %}
+                        {% endif %}
 
-                    {% if form.username %}
+                        {% if form.username %}
                         <label>{{ form.username.label }}</label>
                         {{ form.username }} <br/>
                         {% if form.username.errors %}
-                            {{ form.username.errors }}
+                        {{ form.username.errors }}
                         {% endif %}
-                    {% endif %}
+                        {% endif %}
 
-                    <label>{{ form.password.label }}</label>
-                    {{ form.password }} <br/>
-                    {% if form.password.errors %}
+                        <label>{{ form.password.label }}</label>
+                        {{ form.password }} <br/>
+                        {% if form.password.errors %}
                         {{ form.password.errors }}
-                    {% endif %}
+                        {% endif %}
 
-                    <label>{{ form.first_name.label }}</label>
-                    {{ form.first_name }} <br/>
-                    {% if form.first_name.errors %}
+                        <label>{{ form.first_name.label }}</label>
+                        {{ form.first_name }} <br/>
+                        {% if form.first_name.errors %}
                         {{ form.first_name.errors }}
-                    {% endif %}
+                        {% endif %}
 
-                    <label>{{ form.last_name.label }}</label>
-                    {{ form.last_name }} <br/>
-                    {% if form.last_name.errors %}
+                        <label>{{ form.last_name.label }}</label>
+                        {{ form.last_name }} <br/>
+                        {% if form.last_name.errors %}
                         {{ form.last_name.errors }}
-                    {% endif %}
+                        {% endif %}
 
-                    <label>{{ form.cpf.label }}</label>
-                    {{ form.cpf }} <br/>
-                    {% if form.cpf.errors %}
+                        <label>{{ form.cpf.label }}</label>
+                        {{ form.cpf }} <br/>
+                        {% if form.cpf.errors %}
                         {{ form.cpf.errors }}
-                    {% endif %}
+                        {% endif %}
 
-                    <label>{{ form.telefone.label }}</label>
-                    {{ form.telefone }} <br/>
-                    {% if form.telefone.errors %}
+                        <label>{{ form.telefone.label }}</label>
+                        {{ form.telefone }} <br/>
+                        {% if form.telefone.errors %}
                         {{ form.telefone.errors }}
-                    {% endif %}
+                        {% endif %}
 
-                    <label>{{ form.email.label }}</label>
-                    {{ form.email }} <br/>
-                    {% if form.email.errors %}
+                        <label>{{ form.email.label }}</label>
+                        {{ form.email }} <br/>
+                        {% if form.email.errors %}
                         {{ form.email.errors }}
-                    {% endif %}
+                        {% endif %}
 
-                    <label>{{ form.endereco.label }}</label>
-                    {{ form.endereco }} <br/>
-                    {% if form.endereco.errors %}
+                        <label>{{ form.endereco.label }}</label>
+                        {{ form.endereco }} <br/>
+                        {% if form.endereco.errors %}
                         {{ form.endereco.errors }}
-                    {% endif %}
-                    <div align="center">
-                        <br/>
-                        <button type="submit" class="ui blue button">{% blocktrans %}Salvar{% endblocktrans %}</button>
-                    </div>
-                </form>
+                        {% endif %}
+                        <div align="center">
+                            <br/>
+                            <button type="submit" class="ui blue button">{% blocktrans %}Salvar{% endblocktrans %}</button>
+                        </div>
+                    </form>
 
             </div>
         </article>
